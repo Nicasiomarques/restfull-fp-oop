@@ -1,11 +1,8 @@
 import { Request, Response, Router } from 'express'
 import Post from './post.type'
 
-export default class PostController {
-  public path = '/posts'
-  public router = Router()
-
-  private posts: Post[] = [
+export default function PostController(path = '/posts', router = Router()) {
+  const posts: Post[] = [
     {
       author: 'Nicasio Silva',
       content: 'lorem content lorem',
@@ -13,22 +10,20 @@ export default class PostController {
     }
   ]
 
-  constructor() {
-    this.initializeRoutes()
+  const getAllPosts = (request: Request, response: Response) => {
+    response.send(posts)
   }
 
-  getAllPosts = (request: Request, response: Response) => {
-    response.send(this.posts)
-  }
-
-  createPost = (request: Request, response: Response) => {
+  const createPost = (request: Request, response: Response) => {
     const post: Post = request.body
-    this.posts.push(post)
+    posts.push(post)
     response.send(post)
   }
 
-  public initializeRoutes() {
-    this.router.get(this.path, this.getAllPosts)
-    this.router.get(this.path, this.createPost)
-  }
+  (() => {
+    router.get(path, getAllPosts)
+    router.get(path, createPost)
+  })()
+
+  return { router }
 }

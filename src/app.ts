@@ -1,32 +1,19 @@
 import * as express from 'express'
+import { curry, pipe, __ } from 'ramda'
 
-class App {
-  public app: express.Application
-  public port: number
+const appInstance = express();
 
-  constructor(controllers, port) {
-    this.app = express()
-    this.port = port
+const makeServerWithJsonParser = curry((app = appInstance) => app.use(express.json()))
 
-    this.initializeMiddlewares()
-    this.initializeControllers(controllers)
-  }
+const makeServerWithControllers = curry((app: express.Application, controllers) => {
+  controllers.forEach(controller => app.use('/', controller.router))
+  return app
+})
 
-  public initializeControllers(controllers) {
-    controllers.forEach(controller => {
-      this.app.use('/', controller.router)
-    })
-  }
+const makeServerWithPort = curry((app: express.Application, port: number) => app.listen(port))
 
-  public initializeMiddlewares() {
-    this.app.use(express.json())
-  }
-
-  public run() {
-    this.app.listen(this.port, () => {
-      console.log(`Aplication is running on port ${this.port}`)
-    })
-  }
-}
-
-export default App
+export const makeApp = (controller, port: number) => pipe(
+  makeServerWithJsonParser,
+  makeServerWithControllers(__, controller),
+  makeServerWithPort(__, port)
+)()
