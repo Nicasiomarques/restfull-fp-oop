@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose'
 import * as dotenv from 'dotenv'
 
 import Controller from './http/controller'
+import globalErrorHandler from './middlewares/errorHandler.middleware'
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ class App {
   }
 
   public initializeMiddlewares() {
+    this.app.use(globalErrorHandler)
     this.app.use(express.json())
   }
 
@@ -30,7 +32,8 @@ class App {
 
     mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_PATH}`, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: true
     })
   }
 
