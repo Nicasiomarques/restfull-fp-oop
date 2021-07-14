@@ -1,4 +1,5 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
+import PostNotFoundException from '../../http/exceptions/PostNotFoundException'
 
 import Controller from '../../http/controller'
 import postModel from './post.model'
@@ -13,34 +14,37 @@ export default class PostController implements Controller {
     this.initializeRoutes()
   }
 
-  createPost = async (request: Request, response: Response) => {
+  private createPost = async (request: Request, response: Response) => {
     const postData: Post = request.body
     const postCreated = new postModel(postData)
     await postCreated.save()
     response.json(postCreated)
   }
 
-  getAllPosts = async (_: Request, response: Response) => {
+  private getAllPosts = async (_: Request, response: Response) => {
     const posts: Post[] = await this.post.find()
     response.json(posts)
   }
 
-  getPostById = async (request: Request, response: Response) => {
+  private getPostById = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params
     const post = await this.post.findById(id)
+    if (!post) next(new PostNotFoundException(id))
     response.json(post)
   }
 
-  modifyPost = async (request: Request, response: Response) => {
+  private modifyPost = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params
     const postData: Post = request.body
     const post = await this.post.findByIdAndUpdate(id, postData, { new: true })
+    if (!post) next(new PostNotFoundException(id))
     response.json(post)
   }
 
-  deletePost = async (request: Request, response: Response) => {
+  private deletePost = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params
-    await this.post.findByIdAndRemove(id)
+    const deleted = await this.post.findByIdAndRemove(id)
+    if (!deleted) next(new PostNotFoundException(id))
     response.status(204).json({})
   }
 
