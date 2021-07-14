@@ -10,7 +10,7 @@ dotenv.config()
 class App {
   public app: express.Application
 
-  constructor(controllers) {
+  constructor(controllers: Controller[]) {
     this.app = express()
 
     this.connectDatabase()
