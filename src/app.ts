@@ -8,33 +8,35 @@ import globalErrorHandler from './middlewares/errorHandler.middleware'
 dotenv.config()
 
 class App {
-  public app: express.Application
+  private app: express.Application
 
   constructor(controllers: Controller[]) {
     this.app = express()
-
     this.connectDatabase()
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
+    this.initializeErrorHandler()
   }
 
-  public initializeControllers(controllers: Controller[]) {
+  private initializeControllers(controllers: Controller[]) {
     controllers.forEach(({ router }) => this.app.use('/', router))
   }
 
-  public initializeMiddlewares() {
-    this.app.use(globalErrorHandler)
+  private initializeMiddlewares() {
     this.app.use(express.json())
   }
 
-  public connectDatabase() {
+  private connectDatabase() {
     const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH } = process.env
-
     mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_PATH}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: true
+      useFindAndModify: false
     })
+  }
+
+  private initializeErrorHandler() {
+    this.app.use(globalErrorHandler)
   }
 
   public run() {
