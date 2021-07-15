@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response, Router } from 'express'
-import PostNotFoundException from '../../http/exceptions/PostNotFoundException'
 
-import Controller from '../../http/controller'
-import postModel from './post.model'
 import Post from './post.type'
+import postModel from './post.model'
+import Controller from '../../http/controller'
+import { PostSchemaValidator } from './post.validators'
+import { validatorMiddleware } from '../../middlewares/validator.middleware'
+import PostNotFoundException from '../../http/exceptions/PostNotFoundException'
 
 export default class PostController implements Controller {
   public path = '/posts'
@@ -51,11 +53,11 @@ export default class PostController implements Controller {
   public initializeRoutes() {
     this.router.route(this.path)
       .get(this.getAllPosts)
-      .post(this.createPost)
+      .post(validatorMiddleware(PostSchemaValidator()), this.createPost)
 
     this.router.route(`${this.path}/:id`)
       .get(this.getPostById)
-      .patch(this.modifyPost)
+      .patch(validatorMiddleware(PostSchemaValidator(true)), this.modifyPost)
       .delete(this.deletePost)
   }
 }
