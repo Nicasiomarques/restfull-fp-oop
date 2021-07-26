@@ -1,6 +1,6 @@
+import * as dotenv from 'dotenv'
 import * as express from 'express'
 import * as mongoose from 'mongoose'
-import * as dotenv from 'dotenv'
 
 import Controller from './http/controller'
 import globalErrorHandler from './middlewares/errorHandler.middleware'
@@ -19,7 +19,7 @@ class App {
   }
 
   private initializeControllers(controllers: Controller[]) {
-    controllers.forEach(({ router }) => this.app.use('/', router))
+    controllers.forEach(({ router }) => this.app.use('/api', router))
   }
 
   private initializeMiddlewares() {
