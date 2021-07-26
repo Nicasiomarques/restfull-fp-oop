@@ -6,6 +6,7 @@ import Controller from '../../http/controller'
 import { PostSchemaValidator } from './post.validators'
 import { validatorMiddleware } from '../../middlewares/validator.middleware'
 import PostNotFoundException from '../../http/exceptions/PostNotFoundException'
+import { authMiddleware } from '../../middlewares/auth.middleware'
 
 export default class PostController implements Controller {
   public path = '/posts'
@@ -47,17 +48,17 @@ export default class PostController implements Controller {
     const { id } = request.params
     const deleted = await this.post.findByIdAndRemove(id)
     if (!deleted) next(new PostNotFoundException(id))
-    response.status(204).json({})
+    response.status(204)
   }
 
   public initializeRoutes() {
     this.router.route(this.path)
       .get(this.getAllPosts)
-      .post(validatorMiddleware(PostSchemaValidator()), this.createPost)
-
-    this.router.route(`${this.path}/:id`)
       .get(this.getPostById)
-      .patch(validatorMiddleware(PostSchemaValidator(true)), this.modifyPost)
-      .delete(this.deletePost)
+
+    this.router
+      .post(this.path, authMiddleware, validatorMiddleware(PostSchemaValidator()), this.createPost)
+      .patch(`${this.path}/:id`, authMiddleware, validatorMiddleware(PostSchemaValidator(true)), this.modifyPost)
+      .delete(`${this.path}/:id`, authMiddleware, this.deletePost)
   }
 }
