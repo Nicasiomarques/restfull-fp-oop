@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv'
 import * as express from 'express'
 import * as mongoose from 'mongoose'
 
-import Controller from './http/controller'
-import globalErrorHandler from './middlewares/errorHandler.middleware'
+import { Controller } from './http/controller'
+import { globalErrorHandler } from './middlewares/errorHandler.middleware'
 
 dotenv.config()
 

@@ -1,6 +1,6 @@
-import HttpException from "./httpException";
+import { HttpException } from "./httpException";
 
-export default class WrongAuthTokenException extends HttpException {
+export class WrongAuthTokenException extends HttpException {
   constructor() {
     super(401, `Token de authenticação invalido`)
   }

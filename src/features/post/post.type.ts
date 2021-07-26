@@ -1,4 +1,4 @@
-export default interface Post {
+export interface Post {
   author: string
   content: string
   title: string

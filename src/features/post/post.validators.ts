@@ -1,5 +1,5 @@
 import * as joi from 'joi'
-import Post from './post.type'
+import { Post } from './post.type'
 
 export const PostSchemaValidator = (allowMissingProps = false): joi.Schema<Post> =>
   joi.object({

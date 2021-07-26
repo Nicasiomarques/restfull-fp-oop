@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export default interface User {
+export interface User {
   _id: string;
   name: string;
   email: string;

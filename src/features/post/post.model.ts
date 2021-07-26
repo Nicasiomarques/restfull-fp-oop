@@ -1,5 +1,5 @@
 import { Schema, Document, model } from 'mongoose'
-import Post from './post.type'
+import { Post } from './post.type'
 
 const postSchema = new Schema({
   author: String,
@@ -7,4 +7,4 @@ const postSchema = new Schema({
   title: String,
 })
 
-export default model<Post & Document>('Post', postSchema)
+export const PostModel = model<Post & Document>('Post', postSchema)

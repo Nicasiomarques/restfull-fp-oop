@@ -1,17 +1,15 @@
 import { NextFunction, Request, Response, Router } from 'express'
 
-import Post from './post.type'
-import postModel from './post.model'
-import Controller from '../../http/controller'
-import { PostSchemaValidator } from './post.validators'
-import { validatorMiddleware } from '../../middlewares/validator.middleware'
-import PostNotFoundException from '../../http/exceptions/PostNotFoundException'
-import { authMiddleware } from '../../middlewares/auth.middleware'
+import { Controller } from '../../http/controller'
+import { PostNotFoundException } from '../../http/exceptions'
+import { authMiddleware, validatorMiddleware } from '../../middlewares'
+import { Post, PostSchemaValidator } from '.'
+import { PostModel } from './post.model'
 
-export default class PostController implements Controller {
+export class PostController implements Controller {
   public path = '/posts'
   public router = Router()
-  private post = postModel
+  private post = PostModel
 
   constructor() {
     this.initializeRoutes()
@@ -19,7 +17,7 @@ export default class PostController implements Controller {
 
   private createPost = async (request: Request, response: Response) => {
     const postData: Post = request.body
-    const postCreated = new postModel(postData)
+    const postCreated = new PostModel(postData)
     await postCreated.save()
     response.json(postCreated)
   }

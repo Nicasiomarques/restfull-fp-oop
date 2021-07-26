@@ -1,7 +1,7 @@
 import * as Joi from "joi"
 import { NextFunction, Request, Response } from "express"
 
-import HttpException from "../http/exceptions/httpException";
+import { HttpException } from "../http/exceptions/httpException";
 
 const joiOptions = {
   abortEarly: false,

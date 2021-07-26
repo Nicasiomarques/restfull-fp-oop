@@ -1,6 +1,6 @@
 import { models, Model, Document } from "mongoose";
 
-export default class ModalFactory<T> {
+export class ModalFactory<T> {
   private model: Model<Document & T>;
 
   constructor(modalName: string) {

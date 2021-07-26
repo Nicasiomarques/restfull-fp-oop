@@ -2,20 +2,18 @@ import * as jwt from 'jsonwebtoken'
 import { hash, compare } from 'bcrypt'
 import { Request, Response, NextFunction, Router } from 'express'
 
-import User from '../user/user.type'
-import userModel from '../user/user.model'
-import Controller from '../../http/controller'
-import { validatorMiddleware } from '../../middlewares/validator.middleware'
-import EmailUsedException from '../../http/exceptions/EmailUsedException'
-import WrongCredentialsException from '../../http/exceptions/WrongCredentialsException'
-import { UserCreateValidator, UserLoginValidator } from './authentication.validator'
+import { User, UserModel } from '../user'
+import { Controller } from '../../http/controller'
+import { validatorMiddleware } from '../../middlewares'
+import { UserCreateValidator, UserLoginValidator } from '.'
+import { WrongCredentialsException, EmailUsedException } from '../../http/exceptions'
 
 export interface DataStoredInToken { _id: string; }
 
-export default class AuthenticationController implements Controller {
+export class AuthenticationController implements Controller {
   public path = '/auth'
   public router = Router()
-  public user = userModel
+  public user = UserModel
 
   constructor() {
     this.initializeRoutes()
