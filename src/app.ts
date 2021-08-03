@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import * as express from 'express'
 import * as mongoose from 'mongoose'
+import * as cookieParser from 'cookie-parser'
 
 import { Controller } from './http/controller'
 import { globalErrorHandler } from './middlewares/errorHandler.middleware'
@@ -24,6 +25,7 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(express.json())
+    this.app.use(cookieParser())
   }
 
   private connectDatabase() {
