@@ -1,4 +1,4 @@
-import { User } from "../user"
+import { User } from "../User"
 import * as Joi from "joi"
 
 export const UserCreateValidator = (): Joi.Schema<User> =>

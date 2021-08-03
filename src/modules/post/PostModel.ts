@@ -1,5 +1,5 @@
 import { Schema, Document, model } from 'mongoose'
-import { Post } from './post.type'
+import { Post } from './PostTypes'
 
 const postSchema = new Schema({
   author: String,

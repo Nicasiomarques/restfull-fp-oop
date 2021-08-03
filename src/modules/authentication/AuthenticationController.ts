@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken'
 import { hash, compare } from 'bcrypt'
 import { Request, Response, NextFunction, Router } from 'express'
 
-import { User, UserModel } from '../user'
+import { User, UserModel } from '../User'
 import { Controller } from '../../http/controller'
 import { validatorMiddleware } from '../../middlewares'
 import { UserCreateValidator, UserLoginValidator } from '.'

@@ -1,2 +1,2 @@
-export * from './user.model'
-export * from './user.type'
+export * from './UserModel'
+export * from './UserTypes'

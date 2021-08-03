@@ -4,7 +4,7 @@ import { Controller } from '../../http/controller'
 import { PostNotFoundException } from '../../http/exceptions'
 import { authMiddleware, validatorMiddleware } from '../../middlewares'
 import { Post, PostSchemaValidator } from '.'
-import { PostModel } from './post.model'
+import { PostModel } from './PostModel'
 
 export class PostController implements Controller {
   public path = '/posts'

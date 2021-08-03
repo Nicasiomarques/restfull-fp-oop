@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv'
 
 import App from "./app";
 import { validateEnv } from "./utils/valitateEnv";
-import { PostController } from "./modules/post/post.controller";
-import { AuthenticationController } from './modules/authentication/authentication.controller';
+import { PostController } from "./modules/Post/PostController";
+import { AuthenticationController } from './modules/Authentication/AuthenticationController';
 
 dotenv.config()
 validateEnv()

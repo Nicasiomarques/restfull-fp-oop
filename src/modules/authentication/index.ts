@@ -1,2 +1,2 @@
-export * from './authentication.controller'
-export * from './authentication.validator'
+export * from './AuthenticationController'
+export * from './AuthenticationValidator'

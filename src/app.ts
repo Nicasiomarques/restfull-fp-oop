@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose'
 import * as cookieParser from 'cookie-parser'
 
 import { Controller } from './http/controller'
-import { globalErrorHandler } from './middlewares/errorHandler.middleware'
+import { globalErrorHandler } from './middlewares/ErrorHandlerMiddleware'
 
 dotenv.config()
 
