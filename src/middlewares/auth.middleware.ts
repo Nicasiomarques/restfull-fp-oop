@@ -1,20 +1,20 @@
 import * as jwt from "jsonwebtoken"
 import { NextFunction, Response } from "express"
 
-import { DataStoredInToken } from "../features/authentication"
-import { RequestWithUser, UserModel } from "../features/user"
+import { RequestWithUser, UserModel } from "../modules/user"
+import { DataStoredInToken } from "../modules/authentication"
 import { AuthTokenMissingException, WrongAuthTokenException } from "../http/exceptions"
 
 export const authMiddleware = async (request: RequestWithUser, _: Response, next: NextFunction) => {
-  if (!request?.headers?.authorization) next(new AuthTokenMissingException())
-  const token = request?.headers?.authorization?.replace('Bearer ', '').trim()
+  const token = request?.cookies?.authorization
+  if (!token) next(new AuthTokenMissingException())
   try {
-    const decode = jwt.verify(token, process.env.JWT_SECRET) as DataStoredInToken
-    const user = await UserModel.findById({ _id: decode._id })
+    const userData = jwt.verify(token, process.env.JWT_SECRET) as DataStoredInToken
+    const user = await UserModel.findById({ ...userData })
     if (!user) next(new WrongAuthTokenException())
     request.user = user
-    next()
+    return next()
   } catch (error) {
-    next(new WrongAuthTokenException())
+    return next(new WrongAuthTokenException())
   }
 }
